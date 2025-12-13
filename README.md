@@ -1,11 +1,21 @@
 
-  # Analytics Dashboard with Cross-Filtering
+  # Build91 Customer Portal
 
-  This is a code bundle for Analytics Dashboard with Cross-Filtering. The original project is available at https://www.figma.com/design/icOkKacLXyNQc5n7zhYsuJ/Analytics-Dashboard-with-Cross-Filtering.
+  A customer-facing portal for viewing China sourcing project status, stages, and documents.
+
+  ## Technical Stack
+  - React 18 + TypeScript + Vite
+  - TailwindCSS + shadcn/ui + Headless UI
+  - Zustand for state management
+  - React Query for async data
+  - React Hook Form + Zod for forms
+  - Axios, date-fns, lucide-react, sonner
 
   ## Running the code
 
-  Run `npm i` to install the dependencies.
+  Run `npm install` to install the dependencies.
 
   Run `npm run dev` to start the development server.
+  
+  Run `npm run build` to build for production.
   
