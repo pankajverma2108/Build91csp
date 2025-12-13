@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Project } from '../types';
 import { getStageConfig } from '../config/stages';
 import { MapPin, TrendingUp, Calendar } from 'lucide-react';

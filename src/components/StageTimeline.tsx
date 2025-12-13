@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Stage } from '../types';
 import { StageCode, getStageConfig, STAGE_ORDER } from '../config/stages';
 import { Check } from 'lucide-react';
@@ -30,7 +30,7 @@ export function StageTimeline({ stages, selectedStageCode, onStageSelect }: Stag
           {/* Progress line */}
           <div className="absolute top-6 left-0 right-0 h-0.5 bg-slate-200" style={{ zIndex: 0 }} />
           
-          {STAGE_ORDER.map((stageCode, index) => {
+          {STAGE_ORDER.map((stageCode) => {
             const stage = stageMap.get(stageCode);
             const config = getStageConfig(stageCode);
             const StageIcon = config.icon;
