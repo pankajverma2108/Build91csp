@@ -1,8 +1,9 @@
 import { Customer, Project, Stage, Document, Comment } from '../types';
 import { StageCode } from '../config/stages';
 
-// Simulate API delay
-const delay = (ms: number = 500) => new Promise(resolve => setTimeout(resolve, ms));
+// Simulate API delay (configurable via env or default to 300ms)
+const DEFAULT_DELAY = Number(import.meta.env.VITE_MOCK_DELAY) || 300;
+const delay = (ms: number = DEFAULT_DELAY) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Mock Customers
 const mockCustomers: Record<string, Customer> = {
