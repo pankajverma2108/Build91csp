@@ -1,43 +1,36 @@
-import React, { useState } from 'react';
-import { Header } from './components/Header';
-import { FilterBar } from './components/FilterBar';
-import { WelcomeBanner } from './components/WelcomeBanner';
-import { KPICards } from './components/KPICards';
-import { PhaseCards } from './components/PhaseCards';
-import { MeetingSection } from './components/MeetingSection';
-import { DocumentsFiles } from './components/DocumentsFiles';
-import { ContactTeam } from './components/ContactTeam';
-import { ChatSessions } from './components/ChatSessions';
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from 'sonner';
+import { ErrorBoundary } from './components/shared/ErrorBoundary';
+import { LoginScreen } from './screens/LoginScreen';
+import { ProjectListScreen } from './screens/ProjectListScreen';
+import { ProjectDetailScreen } from './screens/ProjectDetailScreen';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 export default function App() {
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [filterPhase, setFilterPhase] = useState<string>('all');
-
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      
-      <FilterBar
-        viewMode={viewMode}
-        setViewMode={setViewMode}
-        filterPhase={filterPhase}
-        setFilterPhase={setFilterPhase}
-      />
-
-      <main className="max-w-[1920px] mx-auto">
-        <WelcomeBanner />
-        
-        <div className="px-4 md:px-6 py-4 md:py-6 space-y-4 md:space-y-6">
-          <KPICards />
-          <PhaseCards filterPhase={filterPhase} viewMode={viewMode} />
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-            <ContactTeam />
-            <ChatSessions />
-          </div>
-          <MeetingSection />
-          <DocumentsFiles />
-        </div>
-      </main>
-    </div>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<LoginScreen />} />
+            <Route path="/projects" element={<ProjectListScreen />} />
+            <Route path="/projects/:projectId" element={<ProjectDetailScreen />} />
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </Routes>
+        </BrowserRouter>
+        <Toaster position="top-right" richColors />
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
