@@ -168,7 +168,7 @@ export function PhaseCards({ filterPhase, viewMode }: PhaseCardsProps) {
     {
       id: 'deliver',
       number: 7,
-      title: 'Deliver',
+      title: 'Delivery',
       status: 'pending',
       progress: 0,
       tasks: [

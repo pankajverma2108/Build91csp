@@ -19,13 +19,13 @@ export function FilterBar({
   const phases = [
     { id: 'all', label: 'All Phases' },
     { id: 'onboarding', label: 'Onboarding' },
-    { id: 'planning', label: 'Planning & Design' },
-    { id: 'sourcing', label: 'Sourcing' },
-    { id: 'production', label: 'Production' },
-    { id: 'quality', label: 'Quality Control' },
-    { id: 'logistics', label: 'Logistics' },
+    { id: 'planning', label: 'Design Planning' },
+    { id: 'sourcing', label: 'Travel' },
+    { id: 'production', label: 'Shopping' },
+    { id: 'quality', label: 'Ordring' },
+    { id: 'logistics', label: 'Production' },
     { id: 'delivery', label: 'Delivery' },
-    { id: 'completed', label: 'Completed' }
+    { id: 'completed', label: 'Installation' }
   ];
 
   return (
