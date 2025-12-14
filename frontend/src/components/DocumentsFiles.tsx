@@ -1,53 +1,19 @@
 import React from 'react';
 import { FileText, Download, Upload, Eye, CheckCircle } from 'lucide-react';
+import type { DocumentMeta } from "../types/documents";
 
-export function DocumentsFiles() {
-  const documents = [
-    {
-      id: 1,
-      name: 'Contract_Agreement.pdf',
-      phase: 'Onboarding',
-      task: 'Upload signed agreement',
-      uploadedBy: 'Pankaj Verma',
-      uploadDate: 'Dec 5, 2025',
-      size: '2.4 MB',
-      approved: true,
-      assignedContact: 'Pankaj Verma'
-    },
-    {
-      id: 2,
-      name: 'Design_Specs.pdf',
-      phase: 'Planning & Design',
-      task: 'Upload product specs',
-      uploadedBy: 'Upmanyu',
-      uploadDate: 'Dec 10, 2025',
-      size: '3.2 MB',
-      approved: true,
-      assignedContact: 'Upmanyu'
-    },
-    {
-      id: 3,
-      name: 'Budget_Plan.xlsx',
-      phase: 'Planning & Design',
-      task: 'Budget confirmation',
-      uploadedBy: 'Sarah Chen',
-      uploadDate: 'Dec 12, 2025',
-      size: '124 KB',
-      approved: false,
-      assignedContact: 'Upmanyu'
-    },
-    {
-      id: 4,
-      name: 'KYC_Documents.pdf',
-      phase: 'Onboarding',
-      task: 'Confirm your details',
-      uploadedBy: 'Sarah Chen',
-      uploadDate: 'Dec 6, 2025',
-      size: '1.8 MB',
-      approved: true,
-      assignedContact: 'Pankaj Verma'
-    }
-  ];
+interface DocumentsFilesProps {
+  documents: DocumentMeta[];
+}
+
+export function DocumentsFiles({ documents }: DocumentsFilesProps) {
+  if (!documents.length) {
+    return (
+      <div className="bg-card border-2 border-slate-300 rounded-lg p-4 md:p-6 text-sm text-muted-foreground">
+        No documents found for this phase.
+      </div>
+    );
+  }
 
   return (
     <div className="bg-card border-2 border-slate-300 rounded-lg p-4 md:p-6">
@@ -64,7 +30,7 @@ export function DocumentsFiles() {
           >
             {/* Header with Icon and Actions */}
             <div className="flex items-start justify-between gap-2 mb-2">
-              <FileText className="w-8 h-8 text-slate-600 flex-shrink-0" />
+              <FileText className="w-8 h-8 text-slate-600 shrink-0" />
               <div className="flex items-center gap-3">
                 <Eye className="w-4 h-4 text-slate-600 cursor-pointer hover:text-slate-900 transition-colors" title="View" />
                 <Download className="w-4 h-4 text-slate-600 cursor-pointer hover:text-slate-900 transition-colors" title="Download" />
