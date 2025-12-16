@@ -1,29 +1,38 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import { Login } from "./routes/Login";
-import { Projects } from "./routes/Projects";
-import { ProjectDetail } from "./routes/ProjectDetail";
-import { Documents } from "./routes/Documents";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Layout } from "./components/Layout";
+import { Projects } from "./routes/Projects";
+import { Documents } from "./routes/Documents";
+import { Login } from "./routes/Login";
+import { AuthCallback } from "./routes/AuthCallback";
 
-export function App() {
+const queryClient = new QueryClient();
+
+function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      
-      {/* Routes with Sidebar */}
-      <Route element={<Layout />}>
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/projects/:projectId" element={<ProjectDetail />} />
-        <Route path="/documents" element={<Documents />} />
-      </Route>
-      
-      <Route path="*" element={<Navigate to="/projects" replace />} />
-    </Routes>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
+
+          {/* Protected Routes */}
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Navigate to="/projects" replace />} />
+            <Route path="projects" element={<Projects />} />
+            <Route path="documents" element={<Documents />} />
+          </Route>
+
+          {/* Catch all - redirect to projects */}
+          <Route path="*" element={<Navigate to="/projects" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }
 
 export default App;
-
 
 
 // import React, { useState } from 'react';

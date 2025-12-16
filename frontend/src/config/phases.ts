@@ -16,9 +16,9 @@ export const PHASE_CONFIG: Record<PhaseId, PhaseConfig> = {
     description: "Agreement, KYC, initial payment and account setup.",
     order: 1,
   },
-  planning: {
-    id: "planning",
-    label: "Design Planning",
+  planninganddesign: {
+    id: "planninganddesign",
+    label: "Planning & Design",
     shortLabel: "Planning",
     description: "Design plan, budgets, material selection.",
     order: 2,
@@ -51,8 +51,8 @@ export const PHASE_CONFIG: Record<PhaseId, PhaseConfig> = {
     description: "Manufacturing, QC, inspections.",
     order: 6,
   },
-  deliver: {
-    id: "deliver",
+  delivery: {
+    id: "delivery",
     label: "Delivery",
     shortLabel: "Delivery",
     description: "Shipping, customs, final delivery.",
@@ -69,11 +69,11 @@ export const PHASE_CONFIG: Record<PhaseId, PhaseConfig> = {
 
 export const ALL_PHASE_IDS: PhaseId[] = [
   "onboarding",
-  "planning",
+  "planninganddesign",
   "travel",
   "shopping",
   "ordering",
   "production",
-  "deliver",
+  "delivery",
   "installation",
 ];

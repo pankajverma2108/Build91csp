@@ -1,13 +1,22 @@
 import React from 'react';
 import { TrendingUp } from 'lucide-react';
+import { useProjects } from '../hooks/useProjects';
 
 export function WelcomeBanner() {
+  const { data: projects } = useProjects("customer-1");
+  const project = projects?.[0];
+  
+  // Get customer name from project data (will come from API later)
+  const customerName = project?.customerid?.name || "Upmanyu";
+
   return (
     <div className="border-b border-slate-300 bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50">
       <div className="max-w-[1920px] mx-auto px-4 md:px-6 py-6 md:py-8">
         <div className="flex items-center justify-between gap-4">
           <div className="flex-1">
-            <h2 className="font-bold text-foreground mb-1">Welcome, Upmanyu! 👋</h2>
+            <h2 className="font-bold text-foreground mb-1">
+              Welcome, {customerName}! 👋
+            </h2>
             <p className="text-muted-foreground text-sm">
               Here's your project overview. You're making great progress!
             </p>

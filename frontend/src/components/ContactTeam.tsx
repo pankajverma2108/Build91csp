@@ -42,9 +42,7 @@ export function ContactTeam() {
   return (
     <div className="bg-card border-2 border-slate-300 rounded-lg p-4 md:p-6">
       <div className="flex items-center gap-2 mb-4">
-        <h2 className="text-foreground font-semibold">
-          Meet Your Crew
-        </h2>
+        <h2 className="text-foreground font-semibold">Meet Your Crew</h2>
         <span className="text-lg">👥</span>
       </div>
 
@@ -87,9 +85,7 @@ export function ContactTeam() {
                     className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     <Mail className="w-3.5 h-3.5 flex-shrink-0" />
-                    <span className="truncate">
-                      {member.email}
-                    </span>
+                    <span className="truncate">{member.email}</span>
                   </a>
                 </div>
               </div>

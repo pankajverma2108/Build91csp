@@ -1,5 +1,6 @@
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -11,23 +12,33 @@ import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import GoogleIcon from "@mui/icons-material/Google";
+import Alert from "@mui/material/Alert";
 import { useAuthStore } from "../store/authStore";
 
 export function Login() {
   const navigate = useNavigate();
   const login = useAuthStore((s) => s.login);
+  const [searchParams] = useSearchParams();
+  const error = searchParams.get("error");
+
+  // Check if already logged in
+  useEffect(() => {
+    const token = localStorage.getItem("customer_token");
+    if (token) {
+      navigate("/projects");
+    }
+  }, [navigate]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // TODO: validate credentials later
+    // TODO: validate credentials later (password login not enabled yet)
     login();
     navigate("/projects");
   };
 
   const handleGoogleSignIn = () => {
-    // TODO: wire Google OAuth later
-    login();
-    navigate("/projects");
+    // Redirect to backend Google OAuth endpoint
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
   };
 
   return (
@@ -46,6 +57,14 @@ export function Login() {
         <Typography component="h1" variant="h5">
           Sign in to Customer Portal
         </Typography>
+
+        {/* Error Message */}
+        {error && (
+          <Alert severity="error" sx={{ mt: 2, width: "100%" }}>
+            {decodeURIComponent(error)}
+          </Alert>
+        )}
+
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -61,6 +80,8 @@ export function Login() {
             name="email"
             autoComplete="email"
             autoFocus
+            disabled
+            helperText="Password login not enabled yet"
           />
           <TextField
             margin="normal"
@@ -71,6 +92,8 @@ export function Login() {
             type="password"
             id="password"
             autoComplete="current-password"
+            disabled
+            helperText="Use Google login below"
           />
 
           <Stack
@@ -79,7 +102,7 @@ export function Login() {
             alignItems="center"
             sx={{ mt: 1, mb: 2 }}
           >
-            <Link href="#" variant="body2">
+            <Link href="#" variant="body2" onClick={(e) => e.preventDefault()}>
               Forgot password?
             </Link>
           </Stack>
@@ -89,6 +112,7 @@ export function Login() {
             fullWidth
             variant="contained"
             sx={{ mt: 1, mb: 2 }}
+            disabled
           >
             Sign in
           </Button>
@@ -100,25 +124,16 @@ export function Login() {
             variant="outlined"
             startIcon={<GoogleIcon />}
             onClick={handleGoogleSignIn}
+            size="large"
           >
             Continue with Google
           </Button>
+
+          <Typography variant="caption" color="text.secondary" sx={{ mt: 2, display: "block", textAlign: "center" }}>
+            Your Gmail must be registered by an administrator before you can log in.
+          </Typography>
         </Box>
       </Box>
     </Container>
   );
 }
-
-
-// export function Login() {
-//   return (
-//     <div className="min-h-screen flex items-center justify-center">
-//       <div className="max-w-sm w-full p-4">
-//         <h1 className="text-xl font-semibold mb-2">Login</h1>
-//         <p className="text-sm text-muted-foreground">
-//           Placeholder login screen. We will add mobile number + OTP UI later.
-//         </p>
-//       </div>
-//     </div>
-//   );
-// }

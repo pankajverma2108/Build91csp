@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { Bell, Menu, X } from 'lucide-react';
+import { Bell, Menu, X, Home, FileText, LogOut } from 'lucide-react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../store/authStore';
 import logo from 'figma:asset/a4979a0e3ecc8e90fb62877f0725ebac4af10ff0.png';
 
 export function Header() {
+  const navigate = useNavigate();
+  const logout = useAuthStore((s) => s.logout);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [notificationCount] = useState(2);
@@ -12,6 +16,17 @@ export function Header() {
     { id: 2, title: 'Travel Documents need approval', time: '5d ago', isNew: true },
     { id: 3, title: 'Meeting Scheduled', time: '9d ago', isNew: false }
   ];
+
+  const navItems = [
+    { to: "/projects", label: "Home", icon: Home },
+    { to: "/documents", label: "Documents", icon: FileText },
+  ];
+
+  const handleLogout = () => {
+    logout();
+    localStorage.removeItem("customer_token");
+    navigate("/login");
+  };
 
   return (
     <header className="bg-white border-b-2 border-slate-300 sticky top-0 z-50">
@@ -29,6 +44,29 @@ export function Header() {
               </p>
             </div>
           </div>
+
+          {/* Navigation - Desktop */}
+          <nav className="hidden md:flex items-center gap-1 flex-1 justify-center">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      isActive
+                        ? "bg-slate-100 text-slate-900 border-2 border-slate-300"
+                        : "text-muted-foreground hover:bg-slate-50 hover:text-slate-900"
+                    }`
+                  }
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{item.label}</span>
+                </NavLink>
+              );
+            })}
+          </nav>
 
           {/* Search & Actions */}
           <div className="flex items-center gap-2 md:gap-3">
@@ -84,6 +122,15 @@ export function Header() {
               )}
             </div>
 
+            {/* Logout Button - Desktop */}
+            <button
+              onClick={handleLogout}
+              className="hidden md:flex items-center gap-2 p-2 hover:bg-slate-100 rounded-lg transition-colors border-2 border-slate-300"
+              title="Logout"
+            >
+              <LogOut className="w-5 h-5 text-slate-900" />
+            </button>
+
             {/* Menu - Mobile Only */}
             <button
               className="md:hidden p-2 hover:bg-slate-100 rounded-lg transition-colors border-2 border-slate-300"
@@ -108,41 +155,38 @@ export function Header() {
           />
           <div className="fixed top-[73px] left-0 right-0 bg-white border-b-2 border-slate-300 z-50 md:hidden shadow-lg">
             <nav className="px-4 py-3 space-y-1">
-              <a
-                href="#dashboard"
-                className="block px-4 py-3 text-sm font-medium text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
-                onClick={() => setShowMenu(false)}
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
+                        isActive
+                          ? "bg-slate-100 text-slate-900"
+                          : "text-slate-900 hover:bg-slate-100"
+                      }`
+                    }
+                    onClick={() => setShowMenu(false)}
+                  >
+                    <Icon className="w-4 h-4" />
+                    <span>{item.label}</span>
+                  </NavLink>
+                );
+              })}
+              
+              {/* Logout in Mobile Menu */}
+              <button
+                onClick={() => {
+                  setShowMenu(false);
+                  handleLogout();
+                }}
+                className="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors text-red-600 hover:bg-red-50 w-full text-left"
               >
-                Dashboard
-              </a>
-              <a
-                href="#phases"
-                className="block px-4 py-3 text-sm font-medium text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
-                onClick={() => setShowMenu(false)}
-              >
-                Phase Progression
-              </a>
-              <a
-                href="#meetings"
-                className="block px-4 py-3 text-sm font-medium text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
-                onClick={() => setShowMenu(false)}
-              >
-                Meeting Records
-              </a>
-              <a
-                href="#documents"
-                className="block px-4 py-3 text-sm font-medium text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
-                onClick={() => setShowMenu(false)}
-              >
-                Documents & Files
-              </a>
-              <a
-                href="#team"
-                className="block px-4 py-3 text-sm font-medium text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
-                onClick={() => setShowMenu(false)}
-              >
-                Contact Team
-              </a>
+                <LogOut className="w-4 h-4" />
+                <span>Logout</span>
+              </button>
             </nav>
           </div>
         </>

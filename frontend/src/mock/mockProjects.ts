@@ -162,13 +162,30 @@ const phases: Phase[] = [
     }
   ];
 
-export const MOCK_PROJECT: Project = {
-  id: "proj-1",
-  name: "China Sourcing – Living Room & Bedroom",
-  referenceCode: "B91-CSP-0001",
-  location: "Indore, India",
-  customerName: "John Doe",
-  overallStatus: "in-progress",
-  currentPhaseId: "planning",
-  phases,
-};
+export const MOCK_PROJECTS: Project[] = [
+  {
+    id: "proj-123",
+    customerid: {
+      id: "customer-1",
+      name: "Upmanyu",
+      email: "upmanyu@example.com",
+    },
+    adminid: {
+      id: "admin-1",
+      name: "Admin User",
+      email: "admin@chinasourcing.com",
+    },
+    projecttype: "Furniture Sourcing",
+    projectdescription: "Complete 3BHK apartment furnishing with modern Italian furniture",
+    projectlevelbudget: 1500000,
+    location: "Mumbai",
+    status: "active",
+    currentphase: "planninganddesign",
+    estimatedstartdate: "2024-01-15T00:00:00.000Z",
+    estimatedcompletedate: "2024-06-15T00:00:00.000Z",
+    ordervalue: 1800000,
+    createdAt: "2024-12-01T00:00:00.000Z",
+    updatedAt: "2024-12-15T00:00:00.000Z",
+  },
+];
+

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FilterBar } from "../components/FilterBar";
 import { WelcomeBanner } from "../components/WelcomeBanner";
-import { KPICards } from "../components/KPICards";
+// import { KPICards } from "../components/KPICards";
 import { PhaseCards } from "../components/PhaseCards";
 import { MeetingSection } from "../components/MeetingSection";
 import { DocumentsFiles } from "../components/DocumentsFiles";
@@ -11,7 +11,7 @@ import { useProjects } from "../hooks/useProjects";
 import { useDocuments } from "../hooks/useDocuments";
 import { PhaseCardsSkeleton } from "../components/skeletons/PhaseCardsSkeleton";
 import { DocumentsSkeleton } from "../components/skeletons/DocumentsSkeleton";
-import { KPICardsSkeleton } from "../components/skeletons/KPICardsSkeleton";
+// import { KPICardsSkeleton } from "../components/skeletons/KPICardsSkeleton";
 
 export function Projects() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -34,7 +34,7 @@ export function Projects() {
       : allDocuments ?? [];
 
   return (
-    <div className="flex-1 flex flex-col bg-background">
+  <div className="flex-1 flex flex-col bg-background">
       <FilterBar
         viewMode={viewMode}
         setViewMode={setViewMode}
@@ -43,7 +43,7 @@ export function Projects() {
       />
 
       <main className="flex-1 overflow-auto">
-        <div className="max-w-480 mx-auto">
+        <div className="max-w-[1920px] mx-auto">
           <WelcomeBanner />
 
           <div className="px-4 md:px-6 py-4 md:py-6 space-y-4 md:space-y-6">
@@ -61,14 +61,14 @@ export function Projects() {
 
             {isLoading ? (
               <>
-                <KPICardsSkeleton />
+                {/* <KPICardsSkeleton /> */}
                 <PhaseCardsSkeleton />
                 <DocumentsSkeleton />
               </>
             ) : (
               project && (
                 <>
-                  <KPICards />
+                  {/* <KPICards /> */}
                   <PhaseCards
                     filterPhase={filterPhase}
                     viewMode={viewMode}
@@ -92,6 +92,8 @@ export function Projects() {
           </div>
         </div>
       </main>
-    </div>
-  );
+
+  </div>
+);
+
 }

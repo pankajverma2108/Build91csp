@@ -1,12 +1,28 @@
-import type { Phase } from "./phases";
+import type { PhaseId } from "./phases";
 
 export interface Project {
   id: string;
-  name: string;
-  referenceCode?: string;
+  customerid: {
+    id: string;
+    name: string;
+    email: string;
+  };
+  adminid: {
+    id: string;
+    name: string;
+    email: string;
+  };
+  projecttype: string;
+  projectdescription?: string;
+  projectlevelbudget?: number;
   location?: string;
-  customerName?: string;
-  overallStatus: "completed" | "in-progress" | "pending" | "on-hold";
-  currentPhaseId: Phase["id"];
-  phases: Phase[];
+  status: 'draft' | 'active' | 'onhold' | 'completed' | 'cancelled';
+  currentphase: PhaseId;
+  estimatedstartdate?: string;
+  estimatedcompletedate?: string;
+  actualstartdate?: string;
+  actualcompletedate?: string;
+  ordervalue?: number;
+  createdAt: string;
+  updatedAt: string;
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, ChevronRight, Grid3x3, List, MoreVertical, Download, Eye, FileText } from "lucide-react";
+import { ChevronDown, ChevronRight, Grid3x3, List, Eye, Download, FileText } from "lucide-react";
 import { useProjects } from "../hooks/useProjects";
 import { useDocuments } from "../hooks/useDocuments";
 import { PHASE_CONFIG } from "../config/phases";
@@ -28,6 +28,23 @@ export function Documents() {
 
   const getFileIcon = (type?: string) => {
     return <FileText className="w-5 h-5 text-blue-600" />;
+  };
+
+  const handleView = (doc: any) => {
+    if (doc.url) {
+      window.open(doc.url, "_blank");
+    }
+  };
+
+  const handleDownload = (doc: any) => {
+    if (doc.url) {
+      const link = document.createElement("a");
+      link.href = doc.url;
+      link.download = doc.name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   };
 
   return (
@@ -111,6 +128,7 @@ export function Documents() {
                         No documents in this phase yet.
                       </div>
                     ) : viewMode === "list" ? (
+                      // LIST VIEW
                       <div className="overflow-x-auto">
                         <table className="w-full">
                           <thead className="bg-slate-100 border-b-2 border-slate-300">
@@ -142,14 +160,16 @@ export function Documents() {
                                 <td className="px-4 py-3">
                                   <div className="flex items-center gap-2">
                                     <button
+                                      onClick={() => handleView(doc)}
                                       className="p-2 hover:bg-slate-100 rounded transition-colors"
-                                      title="View"
+                                      title="View document"
                                     >
                                       <Eye className="w-4 h-4 text-slate-600" />
                                     </button>
                                     <button
+                                      onClick={() => handleDownload(doc)}
                                       className="p-2 hover:bg-slate-100 rounded transition-colors"
-                                      title="Download"
+                                      title="Download document"
                                     >
                                       <Download className="w-4 h-4 text-slate-600" />
                                     </button>
@@ -161,6 +181,7 @@ export function Documents() {
                         </table>
                       </div>
                     ) : (
+                      // GRID VIEW
                       <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                         {docs.map((doc) => (
                           <div
@@ -183,14 +204,16 @@ export function Documents() {
                                 <span className="text-xs text-muted-foreground">{doc.size || "—"}</span>
                                 <div className="flex items-center gap-1">
                                   <button
+                                    onClick={() => handleView(doc)}
                                     className="p-1.5 hover:bg-slate-100 rounded transition-colors"
-                                    title="View"
+                                    title="View document"
                                   >
                                     <Eye className="w-4 h-4 text-slate-600" />
                                   </button>
                                   <button
+                                    onClick={() => handleDownload(doc)}
                                     className="p-1.5 hover:bg-slate-100 rounded transition-colors"
-                                    title="Download"
+                                    title="Download document"
                                   >
                                     <Download className="w-4 h-4 text-slate-600" />
                                   </button>

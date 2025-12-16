@@ -1,11 +1,11 @@
 export type PhaseId =
   | "onboarding"
-  | "planning"
+  | "planninganddesign"  // Changed from "planning"
   | "travel"
   | "shopping"
   | "ordering"
   | "production"
-  | "deliver"
+  | "delivery"  // Changed from "deliver"
   | "installation";
 
 export type PhaseStatus = "completed" | "in-progress" | "pending" | "locked";

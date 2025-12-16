@@ -1,87 +1,13 @@
 import React, { useState } from 'react';
-import { Calendar, ChevronDown, ChevronUp, FileText, ExternalLink } from 'lucide-react';
-
-interface Meeting {
-  id: number;
-  date: string;
-  time: string;
-  type: 'Discussion' | 'Review' | 'Planning';
-  title: string;
-  description: string;
-  summary: string;
-  attendees: string[];
-  actionItems: { text: string; dueDate?: string }[];
-  linkedDocuments: { name: string; icon?: string }[];
-}
+import { Calendar, ChevronDown, ChevronUp, FileText, ExternalLink, CheckCircle2, Circle } from 'lucide-react';
+import { MOCK_MEETINGS } from '../mock/mockMeetings';
+import type { Meeting } from '../types/api';
 
 export function MeetingSection() {
-  const [expandedMeetings, setExpandedMeetings] = useState<number[]>([1]);
+  const [expandedMeetings, setExpandedMeetings] = useState<string[]>([MOCK_MEETINGS[0]?.id]);
+  const meetings = MOCK_MEETINGS;
 
-  const meetings: Meeting[] = [
-    {
-      id: 1,
-      date: 'Dec 5, 2025',
-      time: '10:30 AM',
-      type: 'Discussion',
-      title: 'Visa Application Progress Review',
-      description: 'Discussed visa application status and next...',
-      summary:
-        'Current visa application is in progress with the consulate. We reviewed all submitted documents and identified a few items that need clarification. The consulate has requested additional proof of business purpose and updated travel itinerary. Timeline is still on track for approval by end of December if documents are submitted promptly.',
-      attendees: ['Upmanyu', 'John Anderson', 'Travel Coordinator'],
-      actionItems: [
-        { text: 'Submit additional business documentation', dueDate: 'by Dec 12' },
-        { text: 'Upmanyu to follow up with consulate representative' },
-        { text: 'Prepare backup travel dates if needed' },
-        { text: 'Update travel insurance to match new dates' }
-      ],
-      linkedDocuments: [
-        { name: 'Visa_Application_Form.pdf' },
-        { name: 'Business_Invitation_Letter.pdf' }
-      ]
-    },
-    {
-      id: 2,
-      date: 'Dec 10, 2025',
-      time: '2:00 PM',
-      type: 'Review',
-      title: 'Design Specifications Review',
-      description: 'Reviewed product design specifications and...',
-      summary:
-        'Comprehensive review of all product design specifications. Team discussed material choices, color palette, and manufacturing constraints. Client provided positive feedback on initial designs with minor adjustments requested for the packaging design.',
-      attendees: ['Upmanyu', 'Wei Chen', 'Sarah Chen'],
-      actionItems: [
-        { text: 'Update packaging design with client feedback', dueDate: 'by Dec 15' },
-        { text: 'Finalize material samples for approval' },
-        { text: 'Schedule factory visit for production planning' }
-      ],
-      linkedDocuments: [
-        { name: 'Design_Specs_v2.pdf' },
-        { name: 'Material_Samples.pdf' }
-      ]
-    },
-    {
-      id: 3,
-      date: 'Dec 12, 2025',
-      time: '11:00 AM',
-      type: 'Planning',
-      title: 'Budget and Timeline Planning',
-      description: 'Planned project budget allocation and...',
-      summary:
-        'Detailed planning session for project budget and timeline. Discussed payment milestones, supplier payment terms, and contingency planning. Established clear timeline for each phase with buffer periods for potential delays.',
-      attendees: ['Pankaj Verma', 'Sarah Chen'],
-      actionItems: [
-        { text: 'Finalize payment schedule with suppliers', dueDate: 'by Dec 18' },
-        { text: 'Update project timeline document' },
-        { text: 'Prepare budget presentation for stakeholders' }
-      ],
-      linkedDocuments: [
-        { name: 'Budget_Plan_Draft.xlsx' },
-        { name: 'Timeline_Gantt_Chart.pdf' }
-      ]
-    }
-  ];
-
-  const toggleMeeting = (meetingId: number) => {
+  const toggleMeeting = (meetingId: string) => {
     setExpandedMeetings((prev) =>
       prev.includes(meetingId)
         ? prev.filter((id) => id !== meetingId)
@@ -89,130 +15,166 @@ export function MeetingSection() {
     );
   };
 
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case 'Discussion':
-        return 'bg-orange-100 text-orange-700 border-orange-300';
-      case 'Review':
+  const getStatusColor = (status: Meeting['status']) => {
+    switch (status) {
+      case 'completed':
+        return 'bg-green-100 text-green-700 border-green-300';
+      case 'scheduled':
         return 'bg-blue-100 text-blue-700 border-blue-300';
-      case 'Planning':
-        return 'bg-purple-100 text-purple-700 border-purple-300';
+      case 'cancelled':
+        return 'bg-red-100 text-red-700 border-red-300';
       default:
         return 'bg-slate-100 text-slate-700 border-slate-300';
     }
   };
 
+  const formatDate = (isoDate: string) => {
+    const date = new Date(isoDate);
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  };
+
+  const formatTime = (isoDate: string) => {
+    const date = new Date(isoDate);
+    return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  };
+
   return (
     <div className="bg-card border-2 border-slate-300 rounded-lg p-4 md:p-6">
-      <div className="flex items-center gap-2 mb-4">
-        <h2 className="text-foreground font-semibold">Meeting Records</h2>
-        <span className="text-lg">📅</span>
-      </div>
+      <h2 className="text-foreground font-semibold mb-4 flex items-center gap-2">
+        Meeting Records
+        <Calendar className="w-5 h-5 text-muted-foreground" />
+      </h2>
 
-      <div className="space-y-2">
+      <div className="space-y-3">
         {meetings.map((meeting) => {
           const isExpanded = expandedMeetings.includes(meeting.id);
-
           return (
             <div
               key={meeting.id}
-              className="border-2 border-slate-300 rounded-lg overflow-hidden bg-blue-50/30 hover:border-slate-400 transition-colors"
+              className="border-2 border-slate-300 rounded-lg overflow-hidden bg-white hover:shadow-md transition-shadow"
             >
               {/* Meeting Header */}
-              <div
-                className="p-3 cursor-pointer"
+              <button
                 onClick={() => toggleMeeting(meeting.id)}
+                className="w-full p-4 flex items-start gap-3 hover:bg-slate-50 transition-colors text-left"
               >
-                <div className="flex items-start justify-between gap-3 mb-1.5">
-                  <div className="flex items-center gap-2 text-sm">
-                    <Calendar className="w-4 h-4 text-slate-600" />
-                    <span className="text-slate-900 font-medium">
-                      {meeting.date} at {meeting.time}
+                <Calendar className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
+                    <span className="text-sm text-muted-foreground">
+                      {formatDate(meeting.scheduledat)} at {formatTime(meeting.scheduledat)}
                     </span>
                     <span
-                      className={`px-2 py-0.5 rounded text-xs font-semibold border ${getTypeColor(
-                        meeting.type
+                      className={`text-xs px-2 py-0.5 rounded-full border-2 font-medium ${getStatusColor(
+                        meeting.status
                       )}`}
                     >
-                      {meeting.type}
+                      {meeting.status.charAt(0).toUpperCase() + meeting.status.slice(1)}
                     </span>
-                  </div>
-                  <button className="text-slate-600 hover:text-slate-900">
-                    {isExpanded ? (
-                      <ChevronUp className="w-5 h-5" />
-                    ) : (
-                      <ChevronDown className="w-5 h-5" />
+                    {meeting.phaseid && (
+                      <span className="text-xs px-2 py-0.5 rounded-full border-2 bg-slate-100 text-slate-700 border-slate-300 font-medium">
+                        {meeting.phaseid.name}
+                      </span>
                     )}
-                  </button>
+                  </div>
+                  <h3 className="font-semibold text-foreground">{meeting.title}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">{meeting.description}</p>
                 </div>
-
-                <h3 className="font-bold text-slate-900 mb-0.5">{meeting.title}</h3>
-                <p className="text-sm text-slate-600">{meeting.description}</p>
-              </div>
+                <div className="flex-shrink-0">
+                  {isExpanded ? (
+                    <ChevronUp className="w-5 h-5 text-muted-foreground" />
+                  ) : (
+                    <ChevronDown className="w-5 h-5 text-muted-foreground" />
+                  )}
+                </div>
+              </button>
 
               {/* Expanded Content */}
               {isExpanded && (
-                <div className="px-3 pb-3 space-y-3 border-t border-slate-300 pt-3">
+                <div className="border-t-2 border-slate-300 bg-slate-50 p-4 space-y-4">
                   {/* Meeting Summary */}
                   <div>
-                    <h4 className="font-bold text-slate-900 mb-1.5">Meeting Summary</h4>
-                    <p className="text-sm text-slate-700 leading-relaxed">
-                      {meeting.summary}
-                    </p>
+                    <h4 className="font-semibold text-sm text-foreground mb-2">Meeting Summary</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{meeting.summary}</p>
                   </div>
 
                   {/* Meeting Attendees */}
                   <div>
-                    <h4 className="font-bold text-slate-900 mb-1.5">Meeting Attendees</h4>
-                    <div className="flex flex-wrap gap-1.5">
+                    <h4 className="font-semibold text-sm text-foreground mb-2">Meeting Attendees</h4>
+                    <div className="flex flex-wrap gap-2">
                       {meeting.attendees.map((attendee, idx) => (
-                        <span
+                        <div
                           key={idx}
-                          className="px-2.5 py-1 bg-white text-blue-700 rounded-full text-sm font-medium border border-blue-300"
+                          className="bg-white border-2 border-slate-300 px-3 py-1.5 rounded-full text-sm"
                         >
-                          {attendee}
-                        </span>
+                          <span className="font-medium text-foreground">{attendee.name}</span>
+                          <span className="text-muted-foreground"> • {attendee.role}</span>
+                        </div>
                       ))}
                     </div>
                   </div>
 
                   {/* Action Items */}
                   <div>
-                    <h4 className="font-bold text-slate-900 mb-1.5">Action Items</h4>
-                    <ul className="space-y-1.5">
-                      {meeting.actionItems.map((item, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-sm">
-                          <span className="w-1.5 h-1.5 rounded-full bg-blue-600 mt-1.5 flex-shrink-0" />
-                          <span className="text-slate-700">
-                            {item.text}
-                            {item.dueDate && (
-                              <span className="text-slate-500"> {item.dueDate}</span>
-                            )}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Linked Documents */}
-                  <div>
-                    <h4 className="font-bold text-slate-900 mb-1.5">Linked Documents</h4>
-                    <div className="space-y-1.5 mb-2">
-                      {meeting.linkedDocuments.map((doc, idx) => (
+                    <h4 className="font-semibold text-sm text-foreground mb-2">Action Items</h4>
+                    <div className="space-y-2">
+                      {meeting.actionitems.map((item, idx) => (
                         <div
                           key={idx}
-                          className="flex items-center gap-2 text-sm text-blue-700 hover:underline cursor-pointer"
+                          className="bg-white border-2 border-slate-300 p-3 rounded-lg flex items-start gap-2"
                         >
-                          <FileText className="w-4 h-4" />
-                          <span>{doc.name}</span>
+                          {item.completed ? (
+                            <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                          ) : (
+                            <Circle className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" />
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <p
+                              className={`text-sm ${
+                                item.completed ? 'text-muted-foreground line-through' : 'text-foreground'
+                              }`}
+                            >
+                              {item.text}
+                            </p>
+                            {item.duedate && (
+                              <p className="text-xs text-muted-foreground mt-1">
+                                Due: {formatDate(item.duedate)}
+                                {item.assignee && ` • Assigned to: ${item.assignee}`}
+                              </p>
+                            )}
+                          </div>
                         </div>
                       ))}
                     </div>
-                    <button className="flex items-center gap-1 text-sm text-blue-600 font-semibold hover:underline">
-                      <span>Open all meeting documents</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </button>
                   </div>
+
+                  {/* Linked Documents */}
+                  {meeting.linkeddocuments && meeting.linkeddocuments.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold text-sm text-foreground mb-2">Linked Documents</h4>
+                      <div className="space-y-2">
+                        {meeting.linkeddocuments.map((doc) => (
+                          <div
+                            key={doc.id}
+                            className="bg-white border-2 border-slate-300 p-3 rounded-lg flex items-center gap-3 hover:bg-slate-50 transition-colors cursor-pointer"
+                          >
+                            <FileText className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-foreground truncate">{doc.filename}</p>
+                              <p className="text-xs text-muted-foreground">{formatFileSize(doc.filesize)}</p>
+                            </div>
+                            <ExternalLink className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
