@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Search, ChevronDown, Calendar, Grid3x3, List, RefreshCw } from 'lucide-react';
 
 interface SearchFilterBarProps {
@@ -34,7 +34,7 @@ export function SearchFilterBar({
 
   return (
     <div className="bg-white border-b border-gray-200 sticky top-16 z-40">
-      <div className="max-w-[1920px] mx-auto px-6 h-14 flex items-center justify-between gap-4">
+      <div className="max-w-480 mx-auto px-6 h-14 flex items-center justify-between gap-4">
         {/* Search Input */}
         <div className="flex-1 max-w-md relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />

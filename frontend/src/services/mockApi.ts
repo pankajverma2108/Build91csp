@@ -1,6 +1,8 @@
-import { MOCK_PROJECTS } from "../mock/mockProjects";
+import { MOCK_PROJECTS, MOCK_PROJECT_WITH_PHASES, MOCK_PHASES } from "../mock/mockProjects";
 import { MOCK_DOCUMENTS } from "../mock/mockDocuments";
 import type { Project } from "../types/project";
+import type { ProjectWithPhases } from "../types/api";
+import type { Phase } from "../types/phases";
 import type { DocumentMeta } from "../types/documents";
 
 // Helper function for simulating API delay
@@ -31,21 +33,24 @@ export async function getProjects(params?: {
   return MOCK_PROJECTS;
 }
 
-export async function getProjectById(projectId: string): Promise<Project> {
+export async function getProjectById(projectId: string): Promise<ProjectWithPhases> {
   await delay(300);
-  const project = MOCK_PROJECTS.find((p) => p.id === projectId);
   
-  if (!project) {
-    throw new Error("Project not found");
+  if (projectId === MOCK_PROJECT_WITH_PHASES.id) {
+    return MOCK_PROJECT_WITH_PHASES;
   }
   
-  return project;
+  throw new Error("Project not found");
 }
 
-export async function getPhases(projectId: string): Promise<any[]> {
+export async function getPhases(projectId: string): Promise<Phase[]> {
   await delay(300);
-  const project = MOCK_PROJECTS.find((p) => p.id === projectId);
-  return project ? [] : []; // Return phases when you add them to Project type
+  
+  if (projectId === MOCK_PROJECT_WITH_PHASES.id) {
+    return MOCK_PHASES;
+  }
+  
+  return [];
 }
 
 export async function getDocuments(params: {
@@ -55,8 +60,9 @@ export async function getDocuments(params: {
   await delay(300);
   const { projectId, phaseId } = params;
   
-  const project = MOCK_PROJECTS.find((p) => p.id === projectId);
-  if (!project) return [];
+  if (projectId !== MOCK_PROJECT_WITH_PHASES.id) {
+    return [];
+  }
   
   if (!phaseId) return MOCK_DOCUMENTS;
   return MOCK_DOCUMENTS.filter((doc) => doc.phaseId === phaseId);

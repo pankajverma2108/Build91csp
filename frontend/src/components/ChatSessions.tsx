@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { MessageCircle, ExternalLink } from 'lucide-react';
 
 export function ChatSessions() {

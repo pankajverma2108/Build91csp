@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Bell, Menu, X, Home, FileText, LogOut } from 'lucide-react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
-import logo from 'figma:asset/a4979a0e3ecc8e90fb62877f0725ebac4af10ff0.png';
+// import logo from 'figma:asset/a4979a0e3ecc8e90fb62877f0725ebac4af10ff0.png';
+import logo from '../assets/logo.png';
 
 export function Header() {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ export function Header() {
 
   return (
     <header className="bg-white border-b-2 border-slate-300 sticky top-0 z-50">
-      <div className="max-w-[1920px] mx-auto px-4 md:px-6 py-3 md:py-4">
+      <div className="max-w-480 mx-auto px-4 md:px-6 py-3 md:py-4">
         <div className="flex items-center justify-between gap-4">
           {/* Logo & Title */}
           <div className="flex items-center gap-3">
@@ -153,7 +154,7 @@ export function Header() {
             className="fixed inset-0 bg-black/20 z-40 md:hidden"
             onClick={() => setShowMenu(false)}
           />
-          <div className="fixed top-[73px] left-0 right-0 bg-white border-b-2 border-slate-300 z-50 md:hidden shadow-lg">
+          <div className="fixed top-18.25 left-0 right-0 bg-white border-b-2 border-slate-300 z-50 md:hidden shadow-lg">
             <nav className="px-4 py-3 space-y-1">
               {navItems.map((item) => {
                 const Icon = item.icon;

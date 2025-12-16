@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import { Phone, Mail } from "lucide-react";
 
 export function ContactTeam() {
@@ -56,7 +56,7 @@ export function ContactTeam() {
             >
               {/* Avatar */}
               <div
-                className={`w-12 h-12 md:w-14 md:h-14 ${colorClasses.bg} rounded-full flex items-center justify-center flex-shrink-0 shadow-sm border-2 border-slate-300`}
+                className={`w-12 h-12 md:w-14 md:h-14 ${colorClasses.bg} rounded-full flex items-center justify-center shrink-0 shadow-sm border-2 border-slate-300`}
               >
                 <span className="text-white font-bold text-sm md:text-base">
                   {member.avatar}
@@ -77,14 +77,14 @@ export function ContactTeam() {
                     href={`tel:${member.phone}`}
                     className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    <Phone className="w-3.5 h-3.5 flex-shrink-0" />
+                    <Phone className="w-3.5 h-3.5 shrink-0" />
                     <span>{member.phone}</span>
                   </a>
                   <a
                     href={`mailto:${member.email}`}
                     className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    <Mail className="w-3.5 h-3.5 flex-shrink-0" />
+                    <Mail className="w-3.5 h-3.5 shrink-0" />
                     <span className="truncate">{member.email}</span>
                   </a>
                 </div>

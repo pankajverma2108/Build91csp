@@ -30,7 +30,7 @@ export function FilterBar({
 
   return (
     <div className="bg-background border-b border-border sticky top-14 md:top-16 z-40">
-      <div className="max-w-[1920px] mx-auto px-4 md:px-6 h-12 md:h-14 flex items-center justify-between gap-4">
+      <div className="max-w-480 mx-auto px-4 md:px-6 h-12 md:h-14 flex items-center justify-between gap-4">
         {/* Left Side - Phase Filter */}
         <div className="relative">
           <button

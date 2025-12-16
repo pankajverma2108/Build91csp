@@ -47,7 +47,7 @@ export function PerformanceMetricsChart({ data, onDataClick }: PerformanceMetric
     ((chartData[chartData.length - 1].customers - chartData[0].customers) / chartData[0].customers * 100) : 0;
 
   return (
-    <Card className="h-[400px] border border-gray-200 shadow-sm bg-white">
+    <Card className="h-100 border border-gray-200 shadow-sm bg-white">
       <CardHeader className="pb-3 border-b border-gray-100">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-gray-900 text-lg font-semibold">

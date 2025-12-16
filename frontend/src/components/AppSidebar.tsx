@@ -1,6 +1,6 @@
 import { Home, FileText, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
+// import { useState } from "react";
 
 interface AppSidebarProps {
   isOpen: boolean;

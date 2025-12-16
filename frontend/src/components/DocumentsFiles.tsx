@@ -32,8 +32,8 @@ export function DocumentsFiles({ documents }: DocumentsFilesProps) {
             <div className="flex items-start justify-between gap-2 mb-2">
               <FileText className="w-8 h-8 text-slate-600 shrink-0" />
               <div className="flex items-center gap-3">
-                <Eye className="w-4 h-4 text-slate-600 cursor-pointer hover:text-slate-900 transition-colors" title="View" />
-                <Download className="w-4 h-4 text-slate-600 cursor-pointer hover:text-slate-900 transition-colors" title="Download" />
+                <Eye className="w-4 h-4 text-slate-600 cursor-pointer hover:text-slate-900 transition-colors" aria-label="View" role="img" />
+                <Download className="w-4 h-4 text-slate-600 cursor-pointer hover:text-slate-900 transition-colors" aria-label="Download" role="img" />
               </div>
             </div>
 

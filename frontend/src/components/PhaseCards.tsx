@@ -1,29 +1,16 @@
 import React, { useState } from "react";
-import {
-  Lock,
-  CheckCircle,
-  Clock,
-  XCircle,
-  ChevronDown,
-  FileText,
-  Download,
-  Eye,
-} from "lucide-react";
+import { Lock, CheckCircle, Clock, XCircle, ChevronDown, FileText, Download, Eye } from "lucide-react";
 
 import type { Phase, Task } from "../types/phases";
 import { PHASE_CONFIG } from "../config/phases";
 
 interface PhaseCardsProps {
-  filterPhase: string;
-  viewMode: "grid" | "list";
   phases: Phase[];
   selectedPhaseId?: string | null;
   onSelectPhase?: (phaseId: string) => void;
 }
 
 export function PhaseCards({
-  filterPhase,
-  viewMode,
   phases,
   selectedPhaseId,
   onSelectPhase,
@@ -31,11 +18,6 @@ export function PhaseCards({
   const [expandedPhase, setExpandedPhase] = useState<string | null>("planning");
   const [showUpcomingModal, setShowUpcomingModal] = useState(false);
   const [expandedTasks, setExpandedTasks] = useState<string[]>(["t5"]);
-
-  const filteredPhases =
-    filterPhase === "all"
-      ? phases
-      : phases.filter((p) => p.id === filterPhase);
 
   const togglePhase = (phaseId: string, isLocked: boolean) => {
     const newExpanded = expandedPhase === phaseId ? null : phaseId;
@@ -301,7 +283,7 @@ export function PhaseCards({
       </div>
       
       <div className="space-y-3">
-        {filteredPhases.map((phase, index) => {
+        {phases.map((phase, index) => {
           const isLocked = phase.status === "locked";
           const isExpanded = expandedPhase === phase.id;
           const isSelected = selectedPhaseId === phase.id;
@@ -309,8 +291,8 @@ export function PhaseCards({
           return (
             <div key={phase.id} className="relative">
               {/* Connecting Line Between Cards */}
-              {index < filteredPhases.length - 1 && (
-                <div className="absolute left-[26px] top-full w-0.5 h-3 bg-slate-300 z-0" />
+              {index < phases.length - 1 && (
+                <div className="absolute left-6.5 top-full w-0.5 h-3 bg-slate-300 z-0" />
               )}
               
               <div
@@ -335,7 +317,7 @@ export function PhaseCards({
                 >
                   <div className="flex items-center gap-3 flex-1">
                     {/* Icon */}
-                    <div className={`flex-shrink-0 ${
+                    <div className={`shrink-0 ${
                       phase.status === "completed" ? "text-slate-900" :
                       phase.status === "in-progress" ? "text-slate-900" :
                       "text-slate-400"
@@ -367,7 +349,7 @@ export function PhaseCards({
                       </span>
                       
                       {phase.status === "completed" ? (
-                        <div className="flex-shrink-0">
+                        <div className="shrink-0">
                           <CheckCircle className="w-6 h-6 text-emerald-600" />
                         </div>
                       ) : phase.status === "in-progress" ? (
@@ -400,7 +382,7 @@ export function PhaseCards({
                       
                       {phase.tasks.length > 0 ? (
                         <div className="border-2 border-slate-300 rounded-lg overflow-x-auto bg-white">
-                          <table className="w-full min-w-[500px]">
+                          <table className="w-full min-w-125">
                             <thead className="bg-slate-100 border-b-2 border-slate-300">
                               <tr>
                                 <th className="px-3 py-1.5 text-left text-xs font-bold text-slate-900 w-auto">
@@ -424,7 +406,7 @@ export function PhaseCards({
                                     <tr className="hover:bg-slate-50 transition-colors">
                                       <td className="px-3 py-2">
                                         <div className="flex items-start gap-2">
-                                          <div className="flex-shrink-0 mt-0.5">
+                                          <div className="shrink-0 mt-0.5">
                                             {task.status === "completed" && (
                                               <CheckCircle className="w-4 h-4 text-emerald-600" />
                                             )}
@@ -435,7 +417,7 @@ export function PhaseCards({
                                               <XCircle className="w-4 h-4 text-muted-foreground" />
                                             )}
                                           </div>
-                                          <span className="text-sm text-foreground break-words">
+                                          <span className="text-sm text-foreground wrap-break-word">
                                             {task.name}
                                           </span>
                                           {hasSubtasks && (
@@ -444,7 +426,7 @@ export function PhaseCards({
                                                 e.stopPropagation();
                                                 toggleTask(task.id);
                                               }}
-                                              className="ml-1 flex-shrink-0"
+                                              className="ml-1 shrink-0"
                                             >
                                               <ChevronDown
                                                 className={`w-3.5 h-3.5 text-muted-foreground transition-transform ${
@@ -480,7 +462,7 @@ export function PhaseCards({
                                       <tr key={subtask.id} className="bg-slate-50 hover:bg-slate-100 transition-colors">
                                         <td className="px-3 py-2 pl-10">
                                           <div className="flex items-start gap-2">
-                                            <div className="flex-shrink-0 mt-0.5">
+                                            <div className="shrink-0 mt-0.5">
                                               {subtask.status === "completed" && (
                                                 <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
                                               )}
@@ -491,7 +473,7 @@ export function PhaseCards({
                                                 <XCircle className="w-3.5 h-3.5 text-muted-foreground" />
                                               )}
                                             </div>
-                                            <span className="text-sm text-muted-foreground break-words">
+                                            <span className="text-sm text-muted-foreground wrap-break-word">
                                               {subtask.name}
                                             </span>
                                           </div>
@@ -555,8 +537,8 @@ export function PhaseCards({
                                 </div>
                               </div>
                               <div className="flex items-center gap-3">
-                                <Eye className="w-4 h-4 text-slate-600 cursor-pointer hover:text-slate-900 transition-colors" title="View" />
-                                <Download className="w-4 h-4 text-slate-600 cursor-pointer hover:text-slate-900 transition-colors" title="Download" />
+                                <Eye className="w-4 h-4 text-slate-600 cursor-pointer hover:text-slate-900 transition-colors" aria-label="View" role="img" />
+                                <Download className="w-4 h-4 text-slate-600 cursor-pointer hover:text-slate-900 transition-colors" aria-label="Download" role="img" />
                               </div>
                             </div>
                           ))}

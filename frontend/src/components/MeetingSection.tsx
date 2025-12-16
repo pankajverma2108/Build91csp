@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Calendar, ChevronDown, ChevronUp, FileText, ExternalLink, CheckCircle2, Circle } from 'lucide-react';
 import { MOCK_MEETINGS } from '../mock/mockMeetings';
 import type { Meeting } from '../types/api';
@@ -64,7 +64,7 @@ export function MeetingSection() {
                 onClick={() => toggleMeeting(meeting.id)}
                 className="w-full p-4 flex items-start gap-3 hover:bg-slate-50 transition-colors text-left"
               >
-                <Calendar className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                <Calendar className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <span className="text-sm text-muted-foreground">
@@ -86,7 +86,7 @@ export function MeetingSection() {
                   <h3 className="font-semibold text-foreground">{meeting.title}</h3>
                   <p className="text-sm text-muted-foreground mt-1">{meeting.description}</p>
                 </div>
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   {isExpanded ? (
                     <ChevronUp className="w-5 h-5 text-muted-foreground" />
                   ) : (
@@ -130,9 +130,9 @@ export function MeetingSection() {
                           className="bg-white border-2 border-slate-300 p-3 rounded-lg flex items-start gap-2"
                         >
                           {item.completed ? (
-                            <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                            <CheckCircle2 className="w-4 h-4 text-green-600 shrink-0 mt-0.5" />
                           ) : (
-                            <Circle className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" />
+                            <Circle className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
                           )}
                           <div className="flex-1 min-w-0">
                             <p
@@ -164,12 +164,12 @@ export function MeetingSection() {
                             key={doc.id}
                             className="bg-white border-2 border-slate-300 p-3 rounded-lg flex items-center gap-3 hover:bg-slate-50 transition-colors cursor-pointer"
                           >
-                            <FileText className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                            <FileText className="w-4 h-4 text-blue-600 shrink-0" />
                             <div className="flex-1 min-w-0">
                               <p className="text-sm font-medium text-foreground truncate">{doc.filename}</p>
                               <p className="text-xs text-muted-foreground">{formatFileSize(doc.filesize)}</p>
                             </div>
-                            <ExternalLink className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                            <ExternalLink className="w-4 h-4 text-muted-foreground shrink-0" />
                           </div>
                         ))}
                       </div>

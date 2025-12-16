@@ -12,7 +12,7 @@ export function ProjectDetail() {
   const { projectId } = useParams();
   const [filterPhase, setFilterPhase] = useState<string>("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [selectedPhaseId, setSelectedPhaseId] = useState<string | null>("planning");
+  const [selectedPhaseId, setSelectedPhaseId] = useState<string | null>("planninganddesign");
 
   const { data: project, isLoading, error } = useProject(projectId);
   const { data: allDocuments, isLoading: isLoadingDocs } = useDocuments(
@@ -52,7 +52,7 @@ export function ProjectDetail() {
         {!isLoading && !error && project && (
           <>
             <div>
-              <h1 className="text-xl font-semibold">{project.name}</h1>
+              <h1 className="text-xl font-semibold">{project.projecttype}</h1>
               <p className="text-sm text-muted-foreground">{project.location}</p>
             </div>
 

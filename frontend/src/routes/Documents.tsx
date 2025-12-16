@@ -189,7 +189,7 @@ export function Documents() {
                             className="bg-white border-2 border-slate-300 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
                           >
                             {/* Document Thumbnail */}
-                            <div className="h-40 bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                            <div className="h-40 bg-linear-to-br from-slate-100 to-slate-200 flex items-center justify-center">
                               <FileText className="w-16 h-16 text-slate-400" />
                             </div>
                             {/* Document Info */}
